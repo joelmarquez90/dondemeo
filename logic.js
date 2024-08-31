@@ -25,7 +25,7 @@ function game() {
             if (this.gameEnded) return;
 
             if (this.urinals[index]) {
-                this.message = 'That urinal is occupied! Choose another.';
+                this.message = 'Apa..';
                 return;
             }
             
@@ -34,9 +34,9 @@ function game() {
             if (index < this.urinals.length - 1 && this.urinals[index + 1]) adjacentOccupied = true;
             
             if (adjacentOccupied) {
-                this.message = 'You chose a urinal next to someone. How awkward!';
+                this.message = 'Querés pispear?';
             } else {
-                this.message = 'Good choice! Free urinal with no one next to you.';
+                this.message = 'Bien chad!';
             }
 
             this.urinals[index] = true;

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urinals Game</title>
+    <title>Dónde Meo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-8" x-data="game()">
-    <h1 class="text-4xl font-bold mb-8 text-blue-600">Urinals Game</h1>
+    <h1 class="text-4xl font-bold mb-8 text-blue-600">Dónde Meo</h1>
     
     <div id="bathroom" class="flex justify-center mb-8 transition-all duration-500 ease-in-out" :class="{'opacity-0': !gameStarted}">
         <template x-for="(urinal, index) in urinals" :key="index">
@@ -31,7 +31,7 @@
         @click="startGame()" 
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
     >
-        New Game
+        Nuevo Juego
     </button>
     
     <p id="message" class="mt-8 text-xl font-semibold text-center" x-text="message"></p>
