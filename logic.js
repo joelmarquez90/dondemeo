@@ -37,17 +37,7 @@ function game() {
             if (adjacentOccupied) {
                 this.message = '¡Uy! Has elegido un mingitorio junto a alguien. Qué incómodo...';
             } else {
-                let optimalChoice = true;
-                for (let i = 0; i < this.urinals.length; i++) {
-                    if (this.urinals[i] === 'free') {
-                        let isIsolated = (i === 0 || this.urinals[i-1] !== 'occupied') &&
-                                         (i === this.urinals.length - 1 || this.urinals[i+1] !== 'occupied');
-                        if (isIsolated && i !== index) {
-                            optimalChoice = false;
-                            break;
-                        }
-                    }
-                }
+                let optimalChoice = this.isOptimalChoice(index);
                 if (optimalChoice) {
                     this.message = '¡Excelente elección! Has maximizado la distancia con otros.';
                 } else {
@@ -56,6 +46,36 @@ function game() {
             }
 
             this.gameEnded = true;
+        },
+
+        isOptimalChoice(index) {
+            let maxDistance = this.getDistanceToOccupied(index);
+            for (let i = 0; i < this.urinals.length; i++) {
+                if (this.urinals[i] === 'free' && i !== index) {
+                    let distance = this.getDistanceToOccupied(i);
+                    if (distance > maxDistance) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        },
+
+        getDistanceToOccupied(index) {
+            let leftDistance = 0;
+            let rightDistance = 0;
+            
+            for (let i = index - 1; i >= 0; i--) {
+                if (this.urinals[i] === 'occupied') break;
+                leftDistance++;
+            }
+            
+            for (let i = index + 1; i < this.urinals.length; i++) {
+                if (this.urinals[i] === 'occupied') break;
+                rightDistance++;
+            }
+            
+            return Math.min(leftDistance, rightDistance);
         }
     }
 }
