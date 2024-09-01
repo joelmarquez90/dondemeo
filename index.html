@@ -27,19 +27,27 @@
                 x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100"
             >
-                <div x-show="tooltipIndex === index" class="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded text-sm mb-2">
+                <div x-show="tooltipIndex === index && showTooltips" class="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded text-sm mb-2">
                     Posible óptimo
                 </div>
             </div>
         </template>
     </div>
     
-    <button 
-        @click="startGame()" 
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
-    >
-        Nuevo Juego
-    </button>
+    <div class="flex space-x-4 mb-4">
+        <button 
+            @click="startGame()" 
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
+        >
+            Nuevo Juego
+        </button>
+        <button 
+            @click="toggleTooltips()" 
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
+            x-text="showTooltips ? 'Desactivar Ayuda' : 'Activar Ayuda'"
+        >
+        </button>
+    </div>
     
     <p id="message" class="mt-8 text-xl font-semibold text-center" x-text="message"></p>
     

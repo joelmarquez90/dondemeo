@@ -5,6 +5,7 @@ function game() {
         gameStarted: false,
         gameEnded: false,
         tooltipIndex: null,
+        showTooltips: false,
 
         init() {
             this.startGame();
@@ -61,6 +62,10 @@ function game() {
                 return index === 0 || index === this.urinals.length - 1;
             }
 
+            // Caso especial para los mingitorios en las esquinas
+            if (index === 0 && this.urinals[1] === 'free') return true;
+            if (index === this.urinals.length - 1 && this.urinals[this.urinals.length - 2] === 'free') return true;
+
             let maxDistance = this.getDistanceToOccupied(index);
             for (let i = 0; i < this.urinals.length; i++) {
                 if (this.urinals[i] === 'free' && i !== index && !this.hasAdjacentOccupied(i)) {
@@ -91,13 +96,17 @@ function game() {
         },
 
         showOptimalTooltip(index) {
-            if (this.urinals[index] === 'free' && !this.gameEnded && this.isOptimalChoice(index)) {
+            if (this.showTooltips && this.urinals[index] === 'free' && !this.gameEnded && this.isOptimalChoice(index)) {
                 this.tooltipIndex = index;
             }
         },
 
         hideTooltip() {
             this.tooltipIndex = null;
+        },
+
+        toggleTooltips() {
+            this.showTooltips = !this.showTooltips;
         }
     }
 }
