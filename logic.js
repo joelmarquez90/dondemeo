@@ -30,13 +30,9 @@ function game() {
         selectUrinal(index) {
             if (this.gameEnded || this.urinals[index] !== 'free') return;
 
-            let adjacentOccupied = false;
-            if (index > 0 && this.urinals[index - 1] === 'occupied') adjacentOccupied = true;
-            if (index < this.urinals.length - 1 && this.urinals[index + 1] === 'occupied') adjacentOccupied = true;
-            
             this.urinals[index] = 'selected';
             
-            if (adjacentOccupied) {
+            if (this.hasAdjacentOccupied(index)) {
                 this.message = '¡Uy! Has elegido un mingitorio junto a alguien. Qué incómodo...';
             } else {
                 let optimalChoice = this.isOptimalChoice(index);
@@ -50,10 +46,17 @@ function game() {
             this.gameEnded = true;
         },
 
+        hasAdjacentOccupied(index) {
+            return (index > 0 && this.urinals[index - 1] === 'occupied') ||
+                   (index < this.urinals.length - 1 && this.urinals[index + 1] === 'occupied');
+        },
+
         isOptimalChoice(index) {
+            if (this.hasAdjacentOccupied(index)) return false;
+
             let maxDistance = this.getDistanceToOccupied(index);
             for (let i = 0; i < this.urinals.length; i++) {
-                if (this.urinals[i] === 'free' && i !== index) {
+                if (this.urinals[i] === 'free' && i !== index && !this.hasAdjacentOccupied(i)) {
                     let distance = this.getDistanceToOccupied(i);
                     if (distance > maxDistance) {
                         return false;
