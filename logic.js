@@ -35,23 +35,23 @@ function game() {
             this.urinals[index] = 'selected';
             
             if (adjacentOccupied) {
-                this.message = 'Querés pispear?';
+                this.message = '¡Uy! Has elegido un mingitorio junto a alguien. Qué incómodo...';
             } else {
                 let optimalChoice = true;
                 for (let i = 0; i < this.urinals.length; i++) {
-                    if (this.urinals[i] === 'free' && 
-                        (i === 0 || this.urinals[i-1] !== 'occupied') && 
-                        (i === this.urinals.length - 1 || this.urinals[i+1] !== 'occupied')) {
-                        if (i !== index) {
+                    if (this.urinals[i] === 'free') {
+                        let isIsolated = (i === 0 || this.urinals[i-1] !== 'occupied') &&
+                                         (i === this.urinals.length - 1 || this.urinals[i+1] !== 'occupied');
+                        if (isIsolated && i !== index) {
                             optimalChoice = false;
                             break;
                         }
                     }
                 }
                 if (optimalChoice) {
-                    this.message = 'Elegiste el mejor lugar';
+                    this.message = '¡Excelente elección! Has maximizado la distancia con otros.';
                 } else {
-                    this.message = 'Porías haber elegido mejor..';
+                    this.message = 'Buena elección, pero había una opción con más privacidad.';
                 }
             }
 
