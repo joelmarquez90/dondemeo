@@ -4,6 +4,7 @@ function game() {
         message: '',
         gameStarted: false,
         gameEnded: false,
+        tooltipIndex: null,
 
         init() {
             this.startGame();
@@ -23,6 +24,7 @@ function game() {
             this.message = 'Elegí un mingitorio libre, mejor lejos de otros!';
             this.gameStarted = true;
             this.gameEnded = false;
+            this.tooltipIndex = null;
         },
 
         selectUrinal(index) {
@@ -76,6 +78,16 @@ function game() {
             }
             
             return Math.min(leftDistance, rightDistance);
+        },
+
+        showOptimalTooltip(index) {
+            if (this.urinals[index] === 'free' && !this.gameEnded && this.isOptimalChoice(index)) {
+                this.tooltipIndex = index;
+            }
+        },
+
+        hideTooltip() {
+            this.tooltipIndex = null;
         }
     }
 }
