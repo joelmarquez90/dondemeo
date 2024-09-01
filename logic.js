@@ -54,6 +54,13 @@ function game() {
         isOptimalChoice(index) {
             if (this.hasAdjacentOccupied(index)) return false;
 
+            const occupiedCount = this.urinals.filter(u => u === 'occupied').length;
+
+            // Si no hay mingitorios ocupados, los de las puntas son óptimos
+            if (occupiedCount === 0) {
+                return index === 0 || index === this.urinals.length - 1;
+            }
+
             let maxDistance = this.getDistanceToOccupied(index);
             for (let i = 0; i < this.urinals.length; i++) {
                 if (this.urinals[i] === 'free' && i !== index && !this.hasAdjacentOccupied(i)) {
