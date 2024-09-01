@@ -6,18 +6,23 @@ function game() {
         gameEnded: false,
         tooltipIndex: null,
         showTooltips: false,
+        isMobile: window.innerWidth < 640, // Assuming 640px as the breakpoint for mobile
 
         init() {
             this.startGame();
+            window.addEventListener('resize', () => {
+                this.isMobile = window.innerWidth < 640;
+                if (this.gameStarted) this.resizeUrinals();
+            });
         },
 
         startGame() {
-            const numUrinals = Math.floor(Math.random() * 6) + 5; // Entre 5 y 10 mingitorios
+            const numUrinals = this.isMobile ? 7 : Math.floor(Math.random() * 6) + 5;
             this.urinals = Array(numUrinals).fill('free');
             
-            // Ocupar algunos mingitorios aleatoriamente
+            // Occupy some urinals randomly
             for (let i = 0; i < this.urinals.length; i++) {
-                if (Math.random() < 0.3) { // 30% de probabilidad de que esté ocupado
+                if (Math.random() < 0.3) { // 30% chance of being occupied
                     this.urinals[i] = 'occupied';
                 }
             }
@@ -26,6 +31,19 @@ function game() {
             this.gameStarted = true;
             this.gameEnded = false;
             this.tooltipIndex = null;
+
+            if (this.isMobile) this.resizeUrinals();
+        },
+
+        resizeUrinals() {
+            const bathroom = document.getElementById('bathroom');
+            const availableWidth = bathroom.offsetWidth - 16; // Subtracting 16px for margins
+            const urinalWidth = Math.floor(availableWidth / 8);
+            const urinals = bathroom.getElementsByClassName('urinal');
+            for (let urinal of urinals) {
+                urinal.style.width = `${urinalWidth}px`;
+                urinal.style.height = `${urinalWidth * 2}px`; // Maintaining 1:2 aspect ratio
+            }
         },
 
         selectUrinal(index) {

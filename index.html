@@ -7,19 +7,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-8" x-data="game()" x-init="init">
-    <h1 class="text-4xl font-bold mb-8 text-blue-600">Dónde Meo</h1>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-8" x-data="game()" x-init="init">
+    <h1 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-blue-600 text-center">Dónde Meo</h1>
     
-    <div id="bathroom" class="flex justify-center mb-8 transition-all duration-500 ease-in-out" :class="{'opacity-0': !gameStarted}">
+    <div id="bathroom" class="flex flex-wrap justify-center mb-6 sm:mb-8 transition-all duration-500 ease-in-out w-full" :class="{'opacity-0': !gameStarted}">
         <template x-for="(urinal, index) in urinals" :key="index">
             <div 
-                class="relative w-16 h-32 border-2 border-gray-400 rounded-lg mx-1 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105"
+                class="urinal relative border-2 border-gray-400 rounded-lg m-1 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105"
                 :class="{
                     'bg-red-500': urinal === 'occupied',
                     'bg-green-500': urinal === 'free',
                     'bg-blue-500': urinal === 'selected',
                     'hover:bg-blue-300': urinal === 'free' && !gameEnded
                 }"
+                :style="isMobile ? {} : { width: '3rem', height: '6rem' }"
                 @click="selectUrinal(index)"
                 @mouseover="showOptimalTooltip(index)"
                 @mouseout="hideTooltip()"
@@ -27,29 +28,29 @@
                 x-transition:enter-start="opacity-0 scale-90"
                 x-transition:enter-end="opacity-100 scale-100"
             >
-                <div x-show="tooltipIndex === index && showTooltips" class="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded text-sm mb-2">
+                <div x-show="tooltipIndex === index && showTooltips" class="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-1 rounded text-xs mb-1 whitespace-nowrap">
                     Posible óptimo
                 </div>
             </div>
         </template>
     </div>
     
-    <div class="flex space-x-4 mb-4">
+    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
         <button 
             @click="startGame()" 
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
         >
             Nuevo Juego
         </button>
         <button 
             @click="toggleTooltips()" 
-            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
             x-text="showTooltips ? 'Desactivar Ayuda' : 'Activar Ayuda'"
         >
         </button>
     </div>
     
-    <p id="message" class="mt-8 text-xl font-semibold text-center" x-text="message"></p>
+    <p id="message" class="mt-4 sm:mt-8 text-lg sm:text-xl font-semibold text-center px-4" x-text="message"></p>
     
     <script src="logic.js"></script>
 </body>
