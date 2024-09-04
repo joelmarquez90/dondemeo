@@ -6,7 +6,8 @@ function game() {
         gameEnded: false,
         tooltipIndex: null,
         showTooltips: false,
-        isMobile: window.innerWidth < 640, // Assuming 640px as the breakpoint for mobile
+        isMobile: window.innerWidth < 640,
+        score: 0,
 
         init() {
             this.startGame();
@@ -17,12 +18,11 @@ function game() {
         },
 
         startGame() {
-            const numUrinals = this.isMobile ? 7 : Math.floor(Math.random() * 6) + 5;
+            const numUrinals = this.isMobile ? 8 : Math.floor(Math.random() * 6) + 5;
             this.urinals = Array(numUrinals).fill('free');
             
-            // Occupy some urinals randomly
             for (let i = 0; i < this.urinals.length; i++) {
-                if (Math.random() < 0.25) { // 25% chance of being occupied
+                if (Math.random() < 0.3) {
                     this.urinals[i] = 'occupied';
                 }
             }
@@ -35,17 +35,6 @@ function game() {
             if (this.isMobile) this.resizeUrinals();
         },
 
-        resizeUrinals() {
-            const bathroom = document.getElementById('bathroom');
-            const availableWidth = bathroom.offsetWidth - 16; // Subtracting 16px for margins
-            const urinalWidth = Math.floor(availableWidth / 8);
-            const urinals = bathroom.getElementsByClassName('urinal');
-            for (let urinal of urinals) {
-                urinal.style.width = `${urinalWidth}px`;
-                urinal.style.height = `${urinalWidth * 2}px`; // Maintaining 1:2 aspect ratio
-            }
-        },
-
         selectUrinal(index) {
             if (this.gameEnded || this.urinals[index] !== 'free') return;
 
@@ -54,17 +43,19 @@ function game() {
             if (this.hasAdjacentOccupied(index)) {
                 this.message = 'Querés pispear?';
                 this.playSadAnimation();
+                this.gameEnded = true;  // Make sure this line is here
             } else {
                 let optimalChoice = this.isOptimalChoice(index);
                 if (optimalChoice) {
                     this.message = 'Grande pibe!';
                     this.playConfettiAnimation();
+                    this.score += 2;
                 } else {
-                    this.message = 'Es buena..';
+                    this.message = 'Buena!';
+                    this.score += 1;
                 }
+                setTimeout(() => this.startGame(), 1500); // Start a new round after a short delay
             }
-
-            this.gameEnded = true;
         },
 
         hasAdjacentOccupied(index) {
@@ -149,6 +140,17 @@ function game() {
                     urinal.classList.remove('shake');
                 }, 500);
             });
+        },
+
+        shareScore() {
+            const tweetText = encodeURIComponent(`¡He conseguido ${this.score} puntos en el juego "Dónde Meo"! ¿Puedes superarme? Juega ahora en `);
+            const tweetUrl = encodeURIComponent('https://joelmarquez90.github.io/dondemeo/');
+            window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${tweetUrl}`, '_blank');
+        },
+
+        closePopup() {
+            this.gameEnded = false;
+            this.startGame();
         }
     }
 }

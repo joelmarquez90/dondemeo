@@ -26,54 +26,85 @@
             animation: shake 0.5s;
             animation-iteration-count: 1;
         }
+
+        .blur {
+            filter: blur(5px);
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-8" x-data="game()" x-init="init">
-    <h1 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-blue-600 text-center">Dónde Meo</h1>
-    
-    <div id="bathroom" class="flex flex-wrap justify-center mb-6 sm:mb-8 transition-all duration-500 ease-in-out w-full" :class="{'opacity-0': !gameStarted}">
-        <template x-for="(urinal, index) in urinals" :key="index">
-            <div 
-                class="urinal relative border-2 border-gray-400 rounded-lg m-1 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105"
-                :class="{
-                    'bg-red-500': urinal === 'occupied',
-                    'bg-green-500': urinal === 'free',
-                    'bg-blue-500': urinal === 'selected',
-                    'hover:bg-blue-300': urinal === 'free' && !gameEnded
-                }"
-                :style="isMobile ? {} : { width: '3rem', height: '6rem' }"
-                @click="selectUrinal(index)"
-                @mouseover="showOptimalTooltip(index)"
-                @mouseout="hideTooltip()"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 scale-90"
-                x-transition:enter-end="opacity-100 scale-100"
-            >
-                <div x-show="tooltipIndex === index && showTooltips" class="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-1 rounded text-xs mb-1 whitespace-nowrap">
-                    Posible óptimo
+    <div :class="{'blur': gameEnded}">
+        <h1 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-blue-600 text-center">Dónde Meo</h1>
+        
+        <div class="text-2xl font-bold mb-4">Score: <span x-text="score"></span></div>
+        
+        <div id="bathroom" class="flex flex-wrap justify-center mb-6 sm:mb-8 transition-all duration-500 ease-in-out w-full" :class="{'opacity-0': !gameStarted}">
+            <template x-for="(urinal, index) in urinals" :key="index">
+                <div 
+                    class="urinal relative border-2 border-gray-400 rounded-lg m-1 cursor-pointer transition-all duration-300 ease-in-out transform hover:scale-105"
+                    :class="{
+                        'bg-red-500': urinal === 'occupied',
+                        'bg-green-500': urinal === 'free',
+                        'bg-blue-500': urinal === 'selected',
+                        'hover:bg-blue-300': urinal === 'free' && !gameEnded
+                    }"
+                    :style="isMobile ? {} : { width: '3rem', height: '6rem' }"
+                    @click="selectUrinal(index)"
+                    @mouseover="showOptimalTooltip(index)"
+                    @mouseout="hideTooltip()"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-90"
+                    x-transition:enter-end="opacity-100 scale-100"
+                >
+                    <div x-show="tooltipIndex === index && showTooltips" class="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-1 rounded text-xs mb-1 whitespace-nowrap">
+                        Posible óptimo
+                    </div>
                 </div>
-            </div>
-        </template>
+            </template>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
+            <button 
+                @click="startGame()" 
+                x-show="!gameStarted || gameEnded"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
+            >
+                Nuevo Juego
+            </button>
+        </div>
+        
+        <p id="message" class="mt-4 sm:mt-8 text-lg sm:text-xl font-semibold text-center px-4" x-text="message"></p>
     </div>
     
-    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
+    <div x-show="gameEnded" class="popup">
+        <span class="close-button" @click="closePopup">&times;</span>
+        <h2 class="text-xl font-bold mb-4">¡Juego terminado!</h2>
+        <p class="mb-4">Tu puntuación final: <span x-text="score"></span></p>
+        <p class="mb-4">¡Comparte tu puntuación e invita a tus amigos a jugar!</p>
         <button 
-            @click="startGame()" 
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
+            @click="shareScore()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
         >
-            Nuevo Juego
+            Compartir en Twitter
         </button>
-        <!-- Help toggle button commented out
-        <button 
-            @click="toggleTooltips()" 
-            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
-            x-text="showTooltips ? 'Desactivar Ayuda' : 'Activar Ayuda'"
-        >
-        </button>
-        -->
     </div>
-    
-    <p id="message" class="mt-4 sm:mt-8 text-lg sm:text-xl font-semibold text-center px-4" x-text="message"></p>
     
     <script src="logic.js"></script>
     <script>
