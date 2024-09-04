@@ -11,14 +11,10 @@ function game() {
 
         init() {
             this.startGame();
-            window.addEventListener('resize', () => {
-                this.isMobile = window.innerWidth < 640;
-                if (this.gameStarted) this.resizeUrinals();
-            });
         },
 
         startGame() {
-            const numUrinals = this.isMobile ? 8 : Math.floor(Math.random() * 6) + 7;
+            const numUrinals = this.isMobile ? 6 : Math.floor(Math.random() * 6) + 7;
             this.urinals = Array(numUrinals).fill('free');
             
             for (let i = 0; i < this.urinals.length; i++) {
@@ -27,12 +23,10 @@ function game() {
                 }
             }
             
-            this.message = 'Elegí dónde mear';
+            this.message = '';
             this.gameStarted = true;
             this.gameEnded = false;
             this.tooltipIndex = null;
-
-            if (this.isMobile) this.resizeUrinals();
         },
 
         resetGame() {
@@ -148,9 +142,9 @@ function game() {
         },
 
         shareScore() {
-            const tweetText = encodeURIComponent(`¡He conseguido ${this.score} puntos en el juego "Dónde Meo"! Jugá ahora en `);
+            const tweetText = encodeURIComponent(`¡He conseguido ${this.score} puntos en el juego "Dónde Meo"! ¿Puedes superarme? Juega ahora en `);
             const tweetUrl = encodeURIComponent('https://joelmarquez90.github.io/dondemeo/');
-            window.open(`https://x.com/intent/post?text=${tweetText}&url=${tweetUrl}`, '_blank');
+            window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${tweetUrl}`, '_blank');
         },
     }
 }
