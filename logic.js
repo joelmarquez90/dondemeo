@@ -52,15 +52,15 @@ function game() {
             this.urinals[index] = 'selected';
             
             if (this.hasAdjacentOccupied(index)) {
-                this.message = '¡Uy! Has elegido un mingitorio junto a alguien. Qué incómodo...';
+                this.message = 'Querés pispear?';
                 this.playSadAnimation();
             } else {
                 let optimalChoice = this.isOptimalChoice(index);
                 if (optimalChoice) {
-                    this.message = '¡Excelente elección! Has maximizado la distancia con otros.';
+                    this.message = 'Grande pibe!';
                     this.playConfettiAnimation();
                 } else {
-                    this.message = 'Buena elección, pero había una opción con más privacidad.';
+                    this.message = 'Es buena..';
                 }
             }
 
