@@ -53,8 +53,8 @@
     <div>
         <h1 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-blue-600 text-center">Dónde Meo</h1>
         
-        <div class="text-2xl font-bold mb-4">Score: <span x-text="score"></span></div>
-        
+        <div class="mt-4 sm:mt-8 text-lg sm:text-xl font-semibold text-center px-4">Puntaje: <span x-text="score"></span></div>
+        <br/>
         <div id="bathroom" class="flex flex-wrap justify-center mb-6 sm:mb-8 transition-all duration-500 ease-in-out w-full" :class="{'opacity-0': !gameStarted}">
             <template x-for="(urinal, index) in urinals" :key="index">
                 <div 
@@ -80,9 +80,9 @@
             </template>
         </div>
         
-        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mb-4">
+        <div class="mt-4 sm:mt-8 text-center px-4">
             <button 
-                @click="startGame()" 
+                @click="resetGame()" 
                 x-show="!gameStarted || gameEnded"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
             >
