@@ -22,12 +22,12 @@ function game() {
             
             // Occupy some urinals randomly
             for (let i = 0; i < this.urinals.length; i++) {
-                if (Math.random() < 0.3) { // 30% chance of being occupied
+                if (Math.random() < 0.25) { // 25% chance of being occupied
                     this.urinals[i] = 'occupied';
                 }
             }
             
-            this.message = 'Elegí un mingitorio libre, mejor lejos de otros!';
+            this.message = 'Elegí dónde mear';
             this.gameStarted = true;
             this.gameEnded = false;
             this.tooltipIndex = null;
