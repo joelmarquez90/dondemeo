@@ -54,7 +54,7 @@ function game() {
                     this.message = 'Buena!';
                     this.score += 1;
                 }
-                setTimeout(() => this.startGame(), 1500); // Start a new round after a short delay
+                setTimeout(() => this.startGame(), 1000); // Start a new round after a short delay
             }
         },
 

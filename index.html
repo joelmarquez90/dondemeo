@@ -50,7 +50,7 @@
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-8" x-data="game()" x-init="init">
-    <div :class="{'blur': gameEnded}">
+    <div>
         <h1 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-blue-600 text-center">Dónde Meo</h1>
         
         <div class="text-2xl font-bold mb-4">Score: <span x-text="score"></span></div>
@@ -88,22 +88,23 @@
             >
                 Nuevo Juego
             </button>
+            <button 
+                @click="shareScore()" 
+                x-show="gameEnded"
+                class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
+            >
+                Compartir Resultados
+            </button>
+
+            <!-- <button 
+                @click="toggleTooltips()" 
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base"
+                x-text="showTooltips ? 'Desactivar Ayuda' : 'Activar Ayuda'"
+            >
+            </button> -->
         </div>
         
         <p id="message" class="mt-4 sm:mt-8 text-lg sm:text-xl font-semibold text-center px-4" x-text="message"></p>
-    </div>
-    
-    <div x-show="gameEnded" class="popup">
-        <span class="close-button" @click="closePopup">&times;</span>
-        <h2 class="text-xl font-bold mb-4">¡Juego terminado!</h2>
-        <p class="mb-4">Tu puntuación final: <span x-text="score"></span></p>
-        <p class="mb-4">¡Comparte tu puntuación e invita a tus amigos a jugar!</p>
-        <button 
-            @click="shareScore()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105"
-        >
-            Compartir en Twitter
-        </button>
     </div>
     
     <script src="logic.js"></script>
