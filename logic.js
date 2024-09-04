@@ -52,13 +52,15 @@ function game() {
             this.urinals[index] = 'selected';
             
             if (this.hasAdjacentOccupied(index)) {
-                this.message = 'Querés pispear?';
+                this.message = '¡Uy! Has elegido un mingitorio junto a alguien. Qué incómodo...';
+                this.playSadAnimation();
             } else {
                 let optimalChoice = this.isOptimalChoice(index);
                 if (optimalChoice) {
-                    this.message = 'Grande pibe, elegiste el mejor lugar';
+                    this.message = '¡Excelente elección! Has maximizado la distancia con otros.';
+                    this.playConfettiAnimation();
                 } else {
-                    this.message = 'Es buena, pero no es la mejor';
+                    this.message = 'Buena elección, pero había una opción con más privacidad.';
                 }
             }
 
@@ -125,6 +127,28 @@ function game() {
 
         toggleTooltips() {
             this.showTooltips = !this.showTooltips;
+        },
+
+        playConfettiAnimation() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            } else {
+                console.error('Confetti function not found');
+            }
+        },
+
+        playSadAnimation() {
+            const urinals = document.querySelectorAll('.urinal');
+            urinals.forEach(urinal => {
+                urinal.classList.add('shake');
+                setTimeout(() => {
+                    urinal.classList.remove('shake');
+                }, 500);
+            });
         }
     }
 }
