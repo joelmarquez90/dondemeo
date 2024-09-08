@@ -39,21 +39,18 @@ function game() {
 
             this.urinals[index] = 'selected';
             
-            if (this.hasAdjacentOccupied(index)) {
-                this.message = 'Querés pispear?';
-                this.gameEnded = true;  // Make sure this line is here
+            if (this.isOptimalChoice(index)) {
+                this.message = 'Grande pibe!';
+                this.playConfettiAnimation();
+                this.score += 2;
+            } else if (!this.hasAdjacentOccupied(index)) {
+                this.message = 'Buena!';
+                this.score += 1;
             } else {
-                let optimalChoice = this.isOptimalChoice(index);
-                if (optimalChoice) {
-                    this.message = 'Grande pibe!';
-                    this.playConfettiAnimation();
-                    this.score += 2;
-                } else {
-                    this.message = 'Buena!';
-                    this.score += 1;
-                }
-                setTimeout(() => this.startGame(), 1000); // Start a new round after a short delay
+                this.message = 'Querés pispear?';
             }
+            
+            setTimeout(() => this.startGame(), 1000); // Start a new round after a short delay
         },
 
         hasAdjacentOccupied(index) {
