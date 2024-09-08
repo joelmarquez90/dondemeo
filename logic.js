@@ -40,16 +40,16 @@ function game() {
             this.urinals[index] = 'selected';
             
             if (this.isOptimalChoice(index)) {
-                this.message = 'Grande pibe!';
+                this.message = 'Grande pibe 🥳';
                 this.playConfettiAnimation();
                 this.score += 2;
             } else if (!this.hasAdjacentOccupied(index)) {
-                this.message = 'Buena!';
+                this.message = 'Buena 🙌';
                 this.score += 1;
             } else if (!this.isWorstChoice(index)) {
-                this.message = 'Querés pispear?';
+                this.message = 'Querés pispear 👀?';
             } else {
-                this.message = 'Perdiste :(';
+                this.message = 'Perdiste 😔';
                 this.gameEnded = true;
             }
 
