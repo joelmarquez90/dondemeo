@@ -46,11 +46,16 @@ function game() {
             } else if (!this.hasAdjacentOccupied(index)) {
                 this.message = 'Buena!';
                 this.score += 1;
-            } else {
+            } else if (!this.isWorstChoice(index)) {
                 this.message = 'Querés pispear?';
+            } else {
+                this.message = 'Perdiste :(';
+                this.gameEnded = true;
             }
-            
-            setTimeout(() => this.startGame(), 1000); // Start a new round after a short delay
+
+            if (!this.gameEnded) {
+                setTimeout(() => this.startGame(), 1000); // Start a new round after a short delay
+            }
         },
 
         hasAdjacentOccupied(index) {
@@ -99,6 +104,18 @@ function game() {
             }
             
             return Math.min(leftDistance, rightDistance);
+        },
+
+        isWorstChoice(index) {
+            if (index === 0 || index === this.urinals.length - 1) {
+                return false;
+            }
+
+            if (this.urinals[0] === 'occupied' && this.urinals[this.urinals.length - 1] === 'occupied') {
+                return false;
+            }
+
+            return true;
         },
 
         showOptimalTooltip(index) {
