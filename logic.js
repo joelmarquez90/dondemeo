@@ -18,7 +18,8 @@ function game() {
             this.urinals = Array(numUrinals).fill('free');
             
             for (let i = 0; i < this.urinals.length; i++) {
-                if (Math.random() < 0.3) {
+                const occupied = this.isMobile ? Math.random() < 0.3 : Math.random() < 0.5;
+                if (occupied) {
                     this.urinals[i] = 'occupied';
                 }
             }
