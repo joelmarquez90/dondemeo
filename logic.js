@@ -24,7 +24,7 @@ function game() {
                 }
             }
             
-            this.message = '';
+            this.message = 'Elegí';
             this.gameStarted = true;
             this.gameEnded = false;
             this.tooltipIndex = null;
