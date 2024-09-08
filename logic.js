@@ -107,6 +107,12 @@ function game() {
         },
 
         isWorstChoice(index) {
+            if ((this.urinals[0] === 'free' && this.urinals[1] === 'free' && index !== 0 && index !== 1) ||
+                (this.urinals[this.urinals.length - 1] === 'free' && this.urinals[this.urinals.length - 2] === 'free' && 
+                    index !== this.urinals.length - 1 && index !== this.urinals.length - 2)) {
+                return true;
+            }
+
             if (index === 0 || index === this.urinals.length - 1) {
                 return false;
             }
