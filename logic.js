@@ -124,20 +124,6 @@ function game() {
             return true;
         },
 
-        showOptimalTooltip(index) {
-            if (this.showTooltips && this.urinals[index] === 'free' && !this.gameEnded && this.isOptimalChoice(index)) {
-                this.tooltipIndex = index;
-            }
-        },
-
-        hideTooltip() {
-            this.tooltipIndex = null;
-        },
-
-        toggleTooltips() {
-            this.showTooltips = !this.showTooltips;
-        },
-
         playConfettiAnimation() {
             if (typeof confetti === 'function') {
                 confetti({
