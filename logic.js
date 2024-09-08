@@ -41,7 +41,6 @@ function game() {
             
             if (this.hasAdjacentOccupied(index)) {
                 this.message = 'Querés pispear?';
-                this.playSadAnimation();
                 this.gameEnded = true;  // Make sure this line is here
             } else {
                 let optimalChoice = this.isOptimalChoice(index);
@@ -129,16 +128,6 @@ function game() {
             } else {
                 console.error('Confetti function not found');
             }
-        },
-
-        playSadAnimation() {
-            const urinals = document.querySelectorAll('.urinal');
-            urinals.forEach(urinal => {
-                urinal.classList.add('shake');
-                setTimeout(() => {
-                    urinal.classList.remove('shake');
-                }, 500);
-            });
         },
 
         shareScore() {
